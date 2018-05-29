@@ -72,9 +72,9 @@ foreach($dateList as $date){
 ## Как использовать
 
 ```php
-use YamlConfig\CodeGenerator\ConfigGenerator;
+use YamlConfig\ClassCodeGenerator\ConfigClassTreeGenerator;
 
-$configGenerator = new ConfigGenerator();
+$configGenerator = new ConfigClassTreeGenerator();
 $configGenerator
     ->setProjectPath($rootDir) // путь к папке проекта
     ->setConfigRelativePath($organizationsRelativePath) // относительный путь расположения yaml-файл с настройками
