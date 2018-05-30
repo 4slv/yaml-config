@@ -74,13 +74,25 @@ class ConfigClassGenerator extends ConfigStructureGenerator
             '%structureComment%' => $this->getStructureComment(),
             '%structureName%' => $this->getStructureName(),
             '%structureProperties%' => $this->getStructureProperties(),
-            '%structureFunctions%' => $this->getStructureFunctions()
+            '%structureFunctions%' => $this->getStructureFunctions(),
+            '%implements%' => $this->getImplements()
         ];
 
         return StringHelper::replacePatterns(
             $structureTemplate,
             $replace
         );
+    }
+
+    /**
+     * @return string свойства структуры
+     */
+    protected function getImplements()
+    {
+        if($implements = $this->getStructureInfo()->getImplements()){
+            return 'implements '.implode(', ',$implements);
+        }
+        return '';
     }
 
     /**
