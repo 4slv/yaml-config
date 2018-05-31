@@ -93,7 +93,7 @@ class ClassInfoList extends StructureInfoList
         if(
             $this->iStructureNode($structureNode)
             &&
-            $this->getInterfaceStructureNodeByNodePath($this->getNodePath($path)) !== false
+            $this->getInterfaceStructureNodeByNodePath($this->getNodePath($path)) !== null
         ){
             $interfaceNamespace = $this->getNamespaceByPath($this->getConfigInterfaceNamespace(), $path);
             $interfaceFullName = $interfaceNamespace. '\\'. $configClassInfo->getName();
