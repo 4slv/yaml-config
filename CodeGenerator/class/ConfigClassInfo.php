@@ -5,17 +5,18 @@ namespace YamlConfig\ClassCodeGenerator;
 
 use YamlConfig\StructureCodeGenerator\ConfigStructureInfo;
 
+/** Информация о классе конфига */
 class ConfigClassInfo extends ConfigStructureInfo
 {
 
     /**
-     * @var string[]
+     * @var string[] список названий реализуемых интерфейсов
      */
     protected $implements;
 
     /**
      *
-     * @return string[]|null
+     * @return string[] список названий реализуемых интерфейсов
      */
     public function getImplements()
     {
@@ -24,7 +25,7 @@ class ConfigClassInfo extends ConfigStructureInfo
 
     /**
      *
-     * @param string[] $implements
+     * @param string[] $implements список названий реализуемых интерфейсов
      * @return $this
      */
     public function setImplements(array $implements = null)
@@ -35,7 +36,7 @@ class ConfigClassInfo extends ConfigStructureInfo
 
     /**
      *
-     * @param string $implements
+     * @param string $implements название реализуемого интерфейс
      * @return $this
      */
     public function addImplements(string $implements)

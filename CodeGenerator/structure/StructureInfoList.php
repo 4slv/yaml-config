@@ -151,7 +151,7 @@ class StructureInfoList implements StructureInfoListInterface
      * @param array $structureNode узел структуры для $configStructureInfo
      * @param array $path путь в виде масива к узлу
      */
-    protected function addedModifiersStructure(ConfigStructureInfoInterface $configStructureInfo, array $structureNode, array $path)
+    protected function addedModifiersStructure($configStructureInfo, array $structureNode, array $path)
     {
         $this->fillPropertyList($configStructureInfo, $structureNode, $path);
     }
@@ -168,7 +168,7 @@ class StructureInfoList implements StructureInfoListInterface
             $structureProperty = $this->getStructureProperty($nodePath, $nodeName, $nodeValue);
             if ($structureProperty->isStructure()) {
                 $subStructureName = $this->fixStructureName($nodeName);
-                $configStructureInfo->addUseClasses((new StructureUse)->setStructure(
+                $configStructureInfo->addUseClasses((new UseStructure)->setStructureFullName(
                     implode(
                         '\\',
                         [$configStructureInfo->getNamespace(), $configStructureInfo->getName(), $subStructureName]

@@ -122,17 +122,13 @@ abstract class ConfigStructureTreeGenerator
         $this->configName = $configName;
         return $this;
     }
-    
+
     /**
      * @return StructureInfoListInterface список информации о структурах
      */
-    protected function createStructureInfoList()
-    {
-        return new StructureInfoList();
-    }
+    abstract protected function createStructureInfoList();
     
     /**
-     * 
      * @param ConfigStructureInfoInterface $configStructureInfo информация о структуре конфига
      * @return ConfigStructureGeneratorInterface
      */

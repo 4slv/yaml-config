@@ -4,20 +4,21 @@ namespace YamlConfig\ClassCodeGenerator;
 
 use YamlConfig\StructureCodeGenerator\ConfigStructureInfoInterface;
 use YamlConfig\StructureCodeGenerator\StructureInfoList;
-use YamlConfig\StructureCodeGenerator\StructureUse;
+use YamlConfig\StructureCodeGenerator\UseStructure;
 
+/** Список информации о классах */
 class ClassInfoList extends StructureInfoList
 {
 
     /** @var array дерево конфигурации интерфейсов yaml */
     protected $yamlConfigInterfaceTree = [];
 
-    /** @var string пространство имён конфига интерфейса */
+    /** @var string пространство имён интерфейса узла конфига */
     protected $configInterfaceNamespace;
 
     /**
      *
-     * @return array
+     * @return array дерево конфигурации интерфейсов yaml
      */
     public function getYamlConfigInterfaceTree()
     {
@@ -33,8 +34,16 @@ class ClassInfoList extends StructureInfoList
     }
 
     /**
+     * @return UseStructure подключаемая структура
+     */
+    protected function createUseStructure()
+    {
+        return new UseStructure();
+    }
+
+    /**
      *
-     * @param array $yamlConfigInterfaceTree
+     * @param array $yamlConfigInterfaceTree массив дерева конфига интерфейса
      * @return $this
      */
     public function setYamlConfigInterfaceTree(array $yamlConfigInterfaceTree = null)
@@ -46,7 +55,7 @@ class ClassInfoList extends StructureInfoList
     }
 
     /**
-     * @return string пространство имён конфига Интерфейса
+     * @return string пространство имён интерфейса узла конфига
      */
     protected function getConfigInterfaceNamespace()
     {
@@ -54,7 +63,7 @@ class ClassInfoList extends StructureInfoList
     }
 
     /**
-     * @param string $configInterfaceNamespace
+     * @param string $configInterfaceNamespace пространство имён интерфейса узла конфига
      * @return $this
      */
     public function setConfigInterfaceNamespace($configInterfaceNamespace)
@@ -64,72 +73,69 @@ class ClassInfoList extends StructureInfoList
     }
 
     /**
-     * @param ConfigStructureInfoInterface $configStructureInfo
+     * @param ConfigClassInfo $configStructureInfo
      * @param array $structureNode узел структуры для $configStructureInfo
      * @param array $path путь в виде масива к узлу
      */
-    protected function addedModifiersStructure(ConfigStructureInfoInterface $configStructureInfo, array $structureNode, array $path)
+    protected function addedModifiersStructure($configStructureInfo, array $structureNode, array $path)
     {
         $this->fillInterfaceList($configStructureInfo, $structureNode, $path);
-        $this->fillPropertyList($configStructureInfo, $structureNode, $path);
+        parent::addedModifiersStructure($configStructureInfo, $structureNode, $path);
     }
 
     /**
-     * @param ConfigStructureInfoInterface $configStructureInfo
+     * @param ConfigClassInfo $configClassInfo
      * @param array $structureNode узел структуры для $configStructureInfo
      * @param array $path путь в виде масива к узлу
      */
-    protected function fillInterfaceList(ConfigStructureInfoInterface $configStructureInfo, array $structureNode, array $path)
+    protected function fillInterfaceList(ConfigClassInfo $configClassInfo, array $structureNode, array $path)
     {
         if(
             $this->iStructureNode($structureNode)
-            && $this->getInterfaceStructureNodeByNodePath($this->getNodePath($path)) !== false
-            ){
-            $configStructureInfo->addUseClasses(
-                (new StructureUse())
-                    ->setStructure(
-                        implode(
-                            '\\',
-                            [
-                                $this->getNamespaceByPath($this->getConfigInterfaceNamespace(),$path),
-                                $configStructureInfo->getName()
-                            ]
-                        )
-                    )->setAlias($configStructureInfo->getName().'Interface')
-            );
-            $configStructureInfo->addImplements($configStructureInfo->getName().'Interface');
-          //  dump($structureNode, $this->getNodePath($path), $this->getInterfaceStructureNodeByNodePath($this->getNodePath($path)));
+            &&
+            $this->getInterfaceStructureNodeByNodePath($this->getNodePath($path)) !== false
+        ){
+            $interfaceNamespace = $this->getNamespaceByPath($this->getConfigInterfaceNamespace(), $path);
+            $interfaceFullName = $interfaceNamespace. '\\'. $configClassInfo->getName();
+            $interfaceAlias = $this->generateInterfaceAlias($configClassInfo->getName());
+
+            $useStructure = $this
+                ->createUseStructure()
+                ->setStructureFullName($interfaceFullName)
+                ->setAlias($interfaceAlias);
+
+            $configClassInfo->addUseClasses($useStructure);
+            $configClassInfo->addImplements($interfaceAlias);
         }
     }
 
     /**
-     * @param array $nodePath
-     * @return array|bool|mixed
+     * @param array $nodePath список частей пути к узлу
+     * @return array дерево конфигурации интерфейсов
      */
     protected function getInterfaceStructureNodeByNodePath(array $nodePath)
     {
         $out = $this->getYamlConfigInterfaceTree();
         if(empty($out)){
-            return false;
+            return null;
         }
         foreach ($nodePath as $currentNodeName){
             if(isset( $out[$currentNodeName])) {
                 $out = $out[$currentNodeName];
             }else{
-                return false;
+                return null;
             }
         }
         return $out;
     }
 
-
     /**
-     * @param string $structureName
-     * @return string
+     * @param string $interfaceName название интерфейса
+     * @return string название псевдонима интерфейса
      */
-    protected function addInterfaceSuffix( string $structureName):string
+    protected function generateInterfaceAlias(string $interfaceName):string
     {
-        return $structureName.'Interface';
+        return $interfaceName.'Interface';
     }
 
 }
