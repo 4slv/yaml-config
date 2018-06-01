@@ -20,7 +20,8 @@
             "YamlConfig\\": "/",
             "YamlConfig\\StructureCodeGenerator\\": "/CodeGenerator/structure",
             "YamlConfig\\ClassCodeGenerator\\": "/CodeGenerator/class",
-            "YamlConfig\\InterfaceCodeGenerator\\": "/CodeGenerator/interface"
+            "YamlConfig\\InterfaceCodeGenerator\\": "/CodeGenerator/interface",
+            "YamlConfig\\InterfaceListCodeGenerator\\": "/CodeGenerator/interfaceList"
         }
     }
 }
