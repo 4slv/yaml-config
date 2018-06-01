@@ -8,8 +8,8 @@ class ConfigStructureInfo implements ConfigStructureInfoInterface
     /** @var string пространство имён структуры конфига */
     protected $namespace;
 
-    /** @var string[] список подключаемых классов */
-    protected $useClasses;
+    /** @var UseStructure[] список подключаемых классов */
+    protected $useClasses = [];
 
     /** @var string название структуры конфига */
     protected $className;
@@ -18,7 +18,7 @@ class ConfigStructureInfo implements ConfigStructureInfoInterface
     protected $comment;
 
     /** @var StructurePropertyInterface[] список свойств */
-    protected $classPropertyList;
+    protected $classPropertyList = [];
 
     public function getNamespace()
     {
@@ -68,5 +68,15 @@ class ConfigStructureInfo implements ConfigStructureInfoInterface
     public function setPropertyList($classPropertyList)
     {
         $this->classPropertyList = $classPropertyList;
+    }
+
+    public function addUseClasses(UseStructure $useStructure)
+    {
+        $this->useClasses[] = $useStructure;
+    }
+
+    public function addPropertyList($classPropertyList)
+    {
+        $this->classPropertyList[] = $classPropertyList;
     }
 }

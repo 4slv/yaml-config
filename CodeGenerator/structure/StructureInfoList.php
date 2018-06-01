@@ -135,41 +135,81 @@ class StructureInfoList implements StructureInfoListInterface
     protected function getConfigStructureInfo($structureNode, $path, $structureName)
     {
         $configStructureInfo = $this->createConfigStructureInfo();
-        $namespace = $this->getConfigNamespace();
-        $namespacePath = array_slice($path, 0, -1);
-        $nodePath = array_slice($path, 1);
-        foreach ($namespacePath as $pathPart){
-            $namespace .= '\\'. $this->fixStructureName($pathPart);
-        }
+        $namespace = $this->getNamespaceByPath($this->getConfigNamespace(),$path);
+        $nodePath = $this->getNodePath($path);
         $configStructureInfo->setNamespace($namespace);
         $configStructureInfo->setComment(
             $this->getCommentByPath($nodePath)
         );
         $configStructureInfo->setName($structureName);
-        $useClassList = [];
-        $structurePropertyList = [];
-        foreach ($structureNode as $subNodeName => $subNode){
-            $structureProperty = $this->getStructureProperty($nodePath, $subNodeName, $subNode);
-            if ($structureProperty->isStructure()){
-                $subStructureName = $this->fixStructureName($subNodeName);
-                $useClassList[] = implode(
-                    '\\',
-                    [$namespace, $structureName, $subStructureName]
-                );
+        $this->addedModifiersStructure($configStructureInfo, $structureNode, $path);
+        return $configStructureInfo;
+    }
+
+    /**
+     * @param ConfigStructureInfoInterface $configStructureInfo
+     * @param array $structureNode узел структуры для $configStructureInfo
+     * @param array $path путь в виде масива к узлу
+     */
+    protected function addedModifiersStructure($configStructureInfo, array $structureNode, array $path)
+    {
+        $this->fillPropertyList($configStructureInfo, $structureNode, $path);
+    }
+
+    /**
+     * @param ConfigStructureInfoInterface $configStructureInfo
+     * @param array $structureNode узел структуры для $configStructureInfo
+     * @param array $path путь в виде масива к узлу
+     */
+    protected function fillPropertyList(ConfigStructureInfoInterface $configStructureInfo, array $structureNode, array $path)
+    {
+        $nodePath = $this->getNodePath($path);
+        foreach ($structureNode as $nodeName  => $nodeValue) {
+            $structureProperty = $this->getStructureProperty($nodePath, $nodeName, $nodeValue);
+            if ($structureProperty->isStructure()) {
+                $subStructureName = $this->fixStructureName($nodeName);
+                $configStructureInfo->addUseClasses((new UseStructure)->setStructureFullName(
+                    implode(
+                        '\\',
+                        [$configStructureInfo->getNamespace(), $configStructureInfo->getName(), $subStructureName]
+                    )
+                ));
                 $structureInfo = $this->getConfigStructureInfo(
-                    $subNode,
-                    array_merge($path, [$subNodeName]),
+                    $nodeValue,
+                    array_merge($path, [$nodeName]),
                     $subStructureName
                 );
                 $this->addStructureInfo($structureInfo);
             }
-            $structurePropertyList[] = $structureProperty;
+            $configStructureInfo->addPropertyList($structureProperty);
         }
-        $configStructureInfo->setUseClasses($useClassList);
-        $configStructureInfo->setPropertyList($structurePropertyList);
-        return $configStructureInfo;
     }
-    
+
+    /**
+     * @param string $configNamespace
+     * @param array $path
+     * @return string
+     */
+    protected function getNamespaceByPath(string $configNamespace, array $path):string
+    {
+        $namespacePath = array_slice($path, 0, -1);
+        foreach ($namespacePath as $pathPart){
+            $configNamespace .= '\\'. $this->fixStructureName($pathPart);
+        }
+        return $configNamespace;
+    }
+
+    /**
+     * @param array $path
+     * @return array
+     */
+    protected function getNodePath(array $path):array
+    {
+        return array_slice($path, 1);
+    }
+
+
+
     /** Исправить имя структуры
      * @param string $structureName имя структуры
      * @return string исправленное имя структуры */

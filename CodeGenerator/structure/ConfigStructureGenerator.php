@@ -70,7 +70,7 @@ abstract class ConfigStructureGenerator implements ConfigStructureGeneratorInter
         $useClasses = $this->getStructureInfo()->getUseClasses();
         $result = '';
         foreach ($useClasses as $useClass){
-            $result .= "use $useClass;\n";
+            $result .= "use ".$useClass->getStructureFullName().($useClass->getAlias() ? ' as '.$useClass->getAlias().'' : '' ) .";".PHP_EOL;
         }
         return $result;
     }
