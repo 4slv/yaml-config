@@ -208,8 +208,6 @@ class StructureInfoList implements StructureInfoListInterface
         return array_slice($path, 1);
     }
 
-
-    
     /** Исправить имя структуры
      * @param string $structureName имя структуры
      * @return string исправленное имя структуры */
