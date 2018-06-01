@@ -8,7 +8,7 @@ class ConfigStructureInfo implements ConfigStructureInfoInterface
     /** @var string пространство имён структуры конфига */
     protected $namespace;
 
-    /** @var StructureUse[] список подключаемых классов */
+    /** @var UseStructure[] список подключаемых классов */
     protected $useClasses = [];
 
     /** @var string название структуры конфига */
@@ -70,7 +70,7 @@ class ConfigStructureInfo implements ConfigStructureInfoInterface
         $this->classPropertyList = $classPropertyList;
     }
 
-    public function addUseClasses(StructureUse $useStructure)
+    public function addUseClasses(UseStructure $useStructure)
     {
         $this->useClasses[] = $useStructure;
     }

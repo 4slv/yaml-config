@@ -13,22 +13,31 @@ class ConfigClassTreeGenerator extends ConfigStructureTreeGenerator
     /** @var string относительный путь расположения yaml-файл с настройками для интерфейса */
     protected $configInterfaceRelativePath;
 
+    /** @var string пространство имён конфига интерфейса */
+    protected $configInterfaceNamespace;
+
     /** @var array дерево конфигурации интерфейсов yaml */
     protected $yamlConfigInterfaceTree;
 
     /** @var string содержимое конфигурации yaml для интерфейса */
     protected $yamlConfigInterfaceContent;
 
-    /** @var string пространство имён конфига интерфейса */
-    protected $configInterfaceNamespace;
-
     /**
-     *
-     * @return string|null
+     * @return string относительный путь расположения yaml-файл с настройками для интерфейса
      */
     public function getConfigInterfaceRelativePath()
     {
         return $this->configInterfaceRelativePath;
+    }
+
+    /**
+     * @param string $configInterfaceRelativePath
+     * @return $this
+     */
+    public function setConfigInterfaceRelativePath(string $configInterfaceRelativePath = null)
+    {
+        $this->configInterfaceRelativePath = $configInterfaceRelativePath;
+        return $this;
     }
 
     /**
@@ -50,22 +59,19 @@ class ConfigClassTreeGenerator extends ConfigStructureTreeGenerator
     }
 
     /**
-     *
-     * @param string $configInterfaceRelativePath
-     * @return $this
+     * @return ClassInfoList список информации о классах
      */
-    public function setConfigInterfaceRelativePath(string $configInterfaceRelativePath = null)
+    protected function createClassInfoList()
     {
-        $this->configInterfaceRelativePath = $configInterfaceRelativePath;
-        return $this;
+        return new ClassInfoList();
     }
 
     /**
-     * @return StructureInfoListInterface список информации о структурах
+     * @return ClassInfoList список информации о классах
      */
     protected function createStructureInfoList()
     {
-        return (new ClassInfoList())
+        return $this->createClassInfoList()
             ->setYamlConfigInterfaceTree($this->getYamlConfigInterfaceTree())
             ->setConfigInterfaceNamespace($this->getConfigInterfaceNamespace());
     }
@@ -88,7 +94,7 @@ class ConfigClassTreeGenerator extends ConfigStructureTreeGenerator
      */
     protected function getYamlConfigInterfaceContent()
     {
-        if(is_null($this->yamlConfigInterfaceContent) && is_file($this->getConfigInterfaceFullPath())){
+        if(is_null($this->yamlConfigInterfaceContent)){
             $this->yamlConfigInterfaceContent = file_get_contents(
                 $this->getConfigInterfaceFullPath()
             );
@@ -101,7 +107,7 @@ class ConfigClassTreeGenerator extends ConfigStructureTreeGenerator
      */
     protected function getYamlConfigInterfaceTree()
     {
-        if(is_null($this->yamlConfigInterfaceTree) && !empty($this->getYamlConfigInterfaceContent())){
+        if(is_null($this->yamlConfigInterfaceTree)){
             $this->yamlConfigInterfaceTree = Yaml::parse(
                 $this->getYamlConfigInterfaceContent()
             );
