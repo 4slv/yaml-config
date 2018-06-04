@@ -170,7 +170,7 @@ abstract class ConfigStructureGenerator implements ConfigStructureGeneratorInter
             '%propertyComment%' => trim($property->getComment())
         ];
 
-        return strlen($property->getComment())
+        return strlen($property->getComment()) || strlen($property->getType())
             ? StringHelper::replacePatterns(
                 $getterComment, $replace)
             : '';

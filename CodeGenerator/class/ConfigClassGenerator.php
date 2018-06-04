@@ -164,12 +164,10 @@ class ConfigClassGenerator extends ConfigStructureGenerator
             '%propertyComment%' => trim($property->getComment())
         ];
 
-        return $property->getComment() === null
-            ? ''
-            : StringHelper::replacePatterns(
-                $propertyComment,
-                $replace
-            );
+        return strlen($property->getComment()) || strlen($property->getType())
+            ? StringHelper::replacePatterns(
+                $propertyComment, $replace)
+            : '';
     }
 
     protected function getStructureFunction(StructurePropertyInterface $property)

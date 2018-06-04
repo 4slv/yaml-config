@@ -79,6 +79,14 @@ class StructureInfoList implements StructureInfoListInterface
     }
 
     /**
+     * @return UseStructure
+     */
+    protected function createUseStructure()
+    {
+        return new UseStructure();
+    }
+
+    /**
      * @return string содержимое конфига yaml
      */
     protected function getYamlConfigContent()
@@ -168,7 +176,7 @@ class StructureInfoList implements StructureInfoListInterface
             $structureProperty = $this->getStructureProperty($nodePath, $nodeName, $nodeValue);
             if ($structureProperty->isStructure()) {
                 $subStructureName = $this->fixStructureName($nodeName);
-                $configStructureInfo->addUseClasses((new UseStructure)->setStructureFullName(
+                $configStructureInfo->addUseClasses($this->createUseStructure()->setStructureFullName(
                     implode(
                         '\\',
                         [$configStructureInfo->getNamespace(), $configStructureInfo->getName(), $subStructureName]

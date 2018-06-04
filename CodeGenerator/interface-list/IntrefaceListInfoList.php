@@ -5,128 +5,78 @@ namespace YamlConfig\InterfaceListCodeGenerator;
 
 use YamlConfig\StructureCodeGenerator\ConfigStructureInfo;
 use YamlConfig\StructureCodeGenerator\ConfigStructureInfoInterface;
-use YamlConfig\StructureCodeGenerator\StructureInfoListInterface;
-use YamlConfig\StructureCodeGenerator\StructureProperty;
+use YamlConfig\StructureCodeGenerator\StructureInfoList;
+use YamlConfig\StructureCodeGenerator\UseStructure;
 
-class IntrefaceListInfoList implements  StructureInfoListInterface
+class IntrefaceListInfoList extends  StructureInfoList
 {
-
-    /** @var string полный путь к конфигу  */
-    protected $configFullPath;
-
-    /** @var string пространство имён конфига */
-    protected $configNamespace;
-
-    /** @var ConfigStructureInfoInterface[] пространство имён конфига */
-    protected $structureInfoList = [];
-
     /**
-     * @return ConfigStructureInfoInterface информация о структуре конфига
+     * @var array Примитивные типы языка (использование по коду для отсутсвия описания в  use)
      */
-    protected function createConfigStructureInfo()
-    {
-        return new ConfigStructureInfo();
-    }
+    protected static $primitiveTypes = [
 
-    /**
-     * @return StructureProperty свойство структуры
-     */
-    protected function createStructureProperty()
-    {
-        return new StructureProperty();
-    }
+        'mixed',
+        '[]',
+        'array',
+        'string',
+        'int',
+        'integer',
+        'float',
+        'bool',
+        'boolean',
+        'null'
+    ];
 
-    /**
-     * @return string
-     */
-    public function getConfigFullPath()
-    {
-        return $this->configFullPath;
-    }
-
-    /**
-     * @param string $configFullPath
-     * @return $this
-     */
-    public function setConfigFullPath($configFullPath)
-    {
-        $this->configFullPath = $configFullPath;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getConfigNamespace()
-    {
-        return $this->configNamespace;
-    }
-
-    /**
-     * @param string $configNamespace
-     * @return $this
-     */
-    public function setConfigNamespace($configNamespace)
-    {
-        $this->configNamespace = $configNamespace;
-        return $this;
-    }
-
-
-    /**
-     * @return ConfigStructureInfoInterface[]
-     */
-    public function getStructureInfoList()
-    {
-        return $this->structureInfoList;
-    }
-
-    /**
-     * @param ConfigStructureInfoInterface[] $structureInfoList список информации о структуре конфига
-     *  @return $this
-     */
-    protected function setStructureInfoList($structureInfoList)
-    {
-        $this->structureInfoList = $structureInfoList;
-        return $this;
-    }
 
     /**
      * @param ConfigStructureInfoInterface $configStructureInfo
-     * @return $this
+     * @param array $structureNode узел структуры для $configStructureInfo
+     * @param array $path путь в виде масива к узлу
      */
-    protected function addStructureInfo(ConfigStructureInfoInterface $configStructureInfo)
+    protected function fillPropertyList(ConfigStructureInfoInterface $configStructureInfo, array $structureNode, array $path)
     {
-        $this->structureInfoList[] = $configStructureInfo;
-        return $this;
-    }
-
-
-
-    public function initFromTree($tree, $path = [])
-    {
-        foreach ($tree as $interfaceName => $interfaceData) {
-            $configStructureInfo = $this->initConfigStructureInfo($interfaceName,$interfaceData['property']);
-            $this->addStructureInfo($configStructureInfo);
+        foreach ($structureNode['property'] as $nodeName => $nodeValue) {
+            $property = $this->createStructureProperty();
+            $property->setName($nodeName);
+            $property->setComment(
+                $this->getCommentByPath($path)
+            );
+            if(!isset($nodeValue['type'])){
+                $configStructureInfo->addPropertyList($property);
+                return;
+            }
+            if($this->isPrimitiveTypes($nodeValue['type'])) {
+                $property->setType($nodeValue['type']);
+            }else{
+                $classPath = explode('\\',$nodeValue['type']);
+                $useClass = $this->createUseStructure();
+                $useClass->setStructureFullName(trim($nodeValue['type'],'\\'));
+                $configStructureInfo->addUseClasses($useClass);
+                $property->setIsStructure(true);
+                $property->setType(end($classPath));
+            }
+            $configStructureInfo->addPropertyList($property);
         }
     }
 
     /**
-     * @param string $interfaceName
-     * @param array $ptoperties
-     * @return ConfigStructureInfoInterface
+     * @param string $typeName
+     * @return bool
      */
-    protected function initConfigStructureInfo(string $interfaceName,array $ptoperties)
+    protected function isPrimitiveTypes(string $typeName): bool
     {
-        $configStructureInfo = $this->createConfigStructureInfo();
-        $configStructureInfo->setName($interfaceName);
-        $configStructureInfo->setNamespace($this->getConfigNamespace());
-        foreach($ptoperties as $ptopertyName => $ptopertyInfo){
-            $property = $this->createStructureProperty();
-            $property->setName($ptopertyName);
-            $property->setType($ptopertyInfo['type']);
-            $configStructureInfo->addPropertyList($property);
-        }
-        return $configStructureInfo;
+        return in_array($typeName,static::$primitiveTypes);
     }
+
+
+    /**
+     * @param array $path
+     * @return array
+     */
+    protected function getNodePath(array $path):array
+    {
+        return $path;
+    }
+
+
 }
