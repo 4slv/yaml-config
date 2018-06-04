@@ -206,11 +206,10 @@ abstract class ConfigStructureTreeGenerator
             FileHelper::recreateDirectory(
                 $this->getConfigCodeFullPath()
             );
-            $configWithRoot = [
-                $this->getConfigName() => $this->getYamlConfigTree()
-            ];
 
-            $structureInfoList = $this->buildStructureInfoList($configWithRoot);
+            $tree = $this->getYamlConfigTree();
+            $this->addedModifiersForTree($tree);
+            $structureInfoList = $this->buildStructureInfoList($tree);
 
             foreach($structureInfoList->getStructureInfoList() as $structureInfo){
                 $this->saveStructureContent($structureInfo);
@@ -220,6 +219,24 @@ abstract class ConfigStructureTreeGenerator
                 $callback();
             }
         }
+    }
+
+    /**
+     * @param array &$tree дерево конфига
+     */
+    protected function addedModifiersForTree(&$tree)
+    {
+        $this->addConfigWithRootForTree($tree);
+    }
+
+    /**
+     * @param array &$tree дерево конфига
+     */
+    protected function addConfigWithRootForTree (&$tree)
+    {
+        $tree = [
+            $this->getConfigName() => $tree
+        ];
     }
     
     /**

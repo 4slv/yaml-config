@@ -9,21 +9,26 @@
 namespace YamlConfig\InterfaceListCodeGenerator;
 
 
-use YamlConfig\StructureCodeGenerator\ConfigStructureGeneratorInterface;
-use YamlConfig\StructureCodeGenerator\ConfigStructureInfoInterface;
+use YamlConfig\InterfaceCodeGenerator\ConfigInterfaceGenerator;
 use YamlConfig\StructureCodeGenerator\ConfigStructureTreeGenerator;
-use YamlConfig\StructureCodeGenerator\StructureInfoListInterface;
 
 class ConfigInterfaceListTreeGenerator extends ConfigStructureTreeGenerator
 {
 
     protected function createStructureInfoList()
     {
-        // TODO: Implement createStructureInfoList() method.
+        return new IntrefaceListInfoList();
     }
 
     protected function createConfigStructureGenerator($configStructureInfo)
     {
-        // TODO: Implement createConfigStructureGenerator() method.
+        $configClassGenerator = new ConfigInterfaceGenerator();
+        return $configClassGenerator->setStructureInfo($configStructureInfo);
     }
+
+    /**
+     * @param array &$tree дерево конфига
+     */
+    protected function addedModifiersForTree(&$tree){ }
+
 }
