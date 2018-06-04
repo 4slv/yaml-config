@@ -132,6 +132,7 @@ abstract class ConfigStructureTreeGenerator
     }
     
     /**
+     *
      * @param ConfigStructureInfoInterface $configStructureInfo информация о структуре конфига
      * @return ConfigStructureGeneratorInterface
      */
