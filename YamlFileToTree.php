@@ -4,6 +4,9 @@ namespace YamlConfig;
 
 
 use Symfony\Component\Yaml\Yaml;
+use DOMDocument;
+use DOMXpath;
+use DOMNodeList;
 
 class YamlFileToTree
 {
@@ -22,6 +25,12 @@ class YamlFileToTree
 
     /** @var string[] комментарии к узлам конфига */
     protected $configNodeComments;
+
+    /** @var DOMDocument дерево конфигурации yaml */
+    protected $yamlConfigDomd;
+
+    /** @var DOMNodeList[] дерево конфигурации yaml */
+    protected $yamlConfigDomdNodeList;
 
 
     /**
@@ -110,5 +119,50 @@ class YamlFileToTree
         }
 
         return $this->configNodeComments;
+    }
+
+    /**
+     * @param string $rootNode
+     * @return DOMDocument
+     */
+    public function getTreeAsDOMDocument($rootNode = 'root')
+    {
+        if(is_null($this->yamlConfigDomd) && !is_null($this->getYamlConfigTree())) {
+            $this->yamlConfigDomd = new DOMDocument('1.0', 'UTF-8');
+            $this->yamlConfigDomd->formatOutput = true;
+            $root = $this->yamlConfigDomd->createElement($rootNode);
+            $this->yamlConfigDomd->appendChild($root);
+            $array2xml = function ($node, $array) use (&$array2xml) {
+                foreach ($array as $key => $value) {
+                    if (is_array($value)) {
+                        $n = $this->yamlConfigDomd->createElement($key);
+                        $node->appendChild($n);
+                        $array2xml($n, $value);
+                    } else {
+                        $node2 = $this->yamlConfigDomd->createElement(is_numeric($key) ? 'item' : $key);
+                        $node->appendChild($node2);
+                        $node2->appendChild($this->yamlConfigDomd->createTextNode($value));
+                    }
+                }
+            };
+            $array2xml($root, $this->getYamlConfigTree());
+        }
+        return $this->yamlConfigDomd;
+    }
+
+
+    /**
+     * @param string $xpath
+     * @param string $rootNode
+     * @return DOMNodeList
+     */
+    public function getDOMNodeListByXpath(string $xpath, string $rootNode = 'root')
+    {
+        if(isset($this->yamlConfigDomdNodeList[$xpath])){
+            return $this->yamlConfigDomdNodeList[$xpath];
+        }
+        return $this->yamlConfigDomdNodeList[$xpath] = (new DOMXpath($this->getTreeAsDOMDocument($rootNode)))->query(
+            '/'.$rootNode.$xpath
+        );
     }
 }

@@ -18,6 +18,27 @@ class ClassInfoList extends StructureInfoList
     /** @var YamlFileToTree относительный путь расположения yaml-файл с настройками для интерфейса */
     protected $yamlFileToTreeInterface;
 
+    /** @var YamlFileToTree относительный путь расположения yaml-файл с настройками для интерфейса(список) */
+    protected $yamlFileToTreeInterfaceList;
+
+    /**
+     * @return YamlFileToTree|null
+     */
+    public function getYamlFileToTreeInterfaceList(): ?YamlFileToTree
+    {
+        return $this->yamlFileToTreeInterfaceList;
+    }
+
+    /**
+     * @param YamlFileToTree|null $yamlFileToTreeInterfaceList
+     * @return $this
+     */
+    public function setYamlFileToTreeInterfaceList(YamlFileToTree $yamlFileToTreeInterfaceList = null)
+    {
+        $this->yamlFileToTreeInterfaceList = $yamlFileToTreeInterfaceList;
+        return $this;
+    }
+
     /**
      * @return YamlFileToTree|null
      */
@@ -79,6 +100,7 @@ class ClassInfoList extends StructureInfoList
      */
     protected function addedModifiersStructure($configStructureInfo, array $structureNode, array $path)
     {
+        $this->fillInterface($configStructureInfo, $structureNode, $path);
         $this->fillInterfaceList($configStructureInfo, $structureNode, $path);
         parent::addedModifiersStructure($configStructureInfo, $structureNode, $path);
     }
@@ -91,13 +113,72 @@ class ClassInfoList extends StructureInfoList
     protected function fillInterfaceList(ConfigClassInfo $configClassInfo, array $structureNode, array $path)
     {
         if(
+            $this->getYamlFileToTreeInterfaceList()
+        ) {
+            $interfaceName = $this->getInterfaceListNameByPath($path);
+            if(is_null($interfaceName)){
+                return;
+            }
+            $interfaceName = $this->fixStructureName($interfaceName);
+            $interfaceFullName = $this->getConfigInterfaceNamespace(). '\\'.$interfaceName;
+            $interfaceAlias = $this->generateInterfaceAlias($interfaceName);
+
+            $useStructure = $this
+                ->createUseStructure()
+                ->setStructureFullName($interfaceFullName)
+                ->setAlias($interfaceAlias);
+
+            $configClassInfo->addUseClasses($useStructure);
+            $configClassInfo->addImplements($interfaceAlias);
+        }
+    }
+
+    /**
+     * @param array $path
+     * @return null|string
+     */
+    protected function getInterfaceListNameByPath(array $path)
+    {
+        foreach($this->getYamlFileToTreeInterfaceList()->getYamlConfigTree() as $interfaceName => $intertfaceConfig){
+            if($this->inArrayXpath($path,$intertfaceConfig['xpath'])){
+                return $interfaceName;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * @param array $path
+     * @param array $xpath
+     * @return bool
+     */
+    protected function inArrayXpath(array $path, array $xpath)
+    {
+        foreach($xpath as $xpath){
+            foreach($this->getYamlFileToTree()->getDOMNodeListByXpath($xpath) as $domdElement){
+                $pathDomdElement = explode('/',ltrim($domdElement->getNodePath(),'/'));
+                if($this->getNodePath($pathDomdElement) == $this->getNodePath($path)){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
+     * @param ConfigClassInfo $configClassInfo
+     * @param array $structureNode узел структуры для $configStructureInfo
+     * @param array $path путь в виде масива к узлу
+     */
+    protected function fillInterface(ConfigClassInfo $configClassInfo, array $structureNode, array $path)
+    {
+        if(
             $this->getYamlFileToTreeInterface()
             &&
             $this->iStructureNode($structureNode)
             &&
             $this->getInterfaceStructureNodeByNodePath($this->getNodePath($path)) !== null
         ){
-            dump($this->getInterfaceStructureNodeByNodePath($this->getNodePath($path)),$structureNode,$this->getConfigInterfaceNamespace());
             $interfaceNamespace = $this->getNamespaceByPath($this->getConfigInterfaceNamespace(), $path);
             $interfaceFullName = $interfaceNamespace. '\\'. $configClassInfo->getName();
             $interfaceAlias = $this->generateInterfaceAlias($configClassInfo->getName());

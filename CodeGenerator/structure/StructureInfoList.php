@@ -3,6 +3,7 @@
 namespace YamlConfig\StructureCodeGenerator;
 
 use Slov\Helper\ArrayHelper;
+use YamlConfig\YamlCommentsParser;
 use YamlConfig\YamlFileToTree;
 
 /** Список информации о структурах */
@@ -27,9 +28,9 @@ class StructureInfoList implements StructureInfoListInterface
 
     /**
      * @param YamlFileToTree $yamlFileToTree
-     * @return $this;
+     * @return
      */
-    public function setYamlFileToTree(YamlFileToTree $yamlFileToTree = null)
+    public function setYamlFileToTree(YamlFileToTree $yamlFileToTree)
     {
         $this->yamlFileToTree = $yamlFileToTree;
         return $this;
