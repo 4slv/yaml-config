@@ -3,10 +3,8 @@
 namespace YamlConfig\InterfaceListCodeGenerator;
 
 
-use YamlConfig\StructureCodeGenerator\ConfigStructureInfo;
 use YamlConfig\StructureCodeGenerator\ConfigStructureInfoInterface;
 use YamlConfig\StructureCodeGenerator\StructureInfoList;
-use YamlConfig\StructureCodeGenerator\UseStructure;
 
 class IntrefaceListInfoList extends  StructureInfoList
 {
