@@ -10,6 +10,10 @@ use YamlConfig\StructureCodeGenerator\UseStructure;
 
 class IntrefaceListInfoList extends  StructureInfoList
 {
+
+    const propertyNodeName = 'property';
+    const typeNodeName = 'type';
+
     /**
      * @var array Примитивные типы языка (использование по коду для отсутсвия описания в  use)
      */
@@ -29,28 +33,30 @@ class IntrefaceListInfoList extends  StructureInfoList
 
 
     /**
-     * @param ConfigStructureInfoInterface $configStructureInfo
+     * @param ConfigStructureInfoInterface $configStructureInfo информация о структуре конфига
      * @param array $structureNode узел структуры для $configStructureInfo
      * @param array $path путь в виде масива к узлу
      */
     protected function fillPropertyList(ConfigStructureInfoInterface $configStructureInfo, array $structureNode, array $path)
     {
-        foreach ($structureNode['property'] as $nodeName => $nodeValue) {
+        foreach ($structureNode[self::propertyNodeName] as $nodeName => $nodeValue) {
+            $propertyPath = array_merge($path, [self::propertyNodeName, $nodeName]);
             $property = $this->createStructureProperty();
             $property->setName($nodeName);
             $property->setComment(
-                $this->getCommentByPath($path)
+                $this->getCommentByPath($propertyPath)
             );
-            if(!isset($nodeValue['type'])){
+            $propertyType = $nodeValue[self::typeNodeName];
+            if(!isset($propertyType)){
                 $configStructureInfo->addPropertyList($property);
                 return;
             }
-            if($this->isPrimitiveTypes($nodeValue['type'])) {
-                $property->setType($nodeValue['type']);
+            if($this->isPrimitiveTypes($propertyType)) {
+                $property->setType($propertyType);
             }else{
-                $classPath = explode('\\',$nodeValue['type']);
+                $classPath = explode('\\',$propertyType);
                 $useClass = $this->createUseStructure();
-                $useClass->setStructureFullName(trim($nodeValue['type'],'\\'));
+                $useClass->setStructureFullName(trim($propertyType,'\\'));
                 $configStructureInfo->addUseClasses($useClass);
                 $property->setIsStructure(true);
                 $property->setType(end($classPath));
