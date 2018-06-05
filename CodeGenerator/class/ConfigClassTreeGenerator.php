@@ -4,39 +4,33 @@ namespace YamlConfig\ClassCodeGenerator;
 
 use Symfony\Component\Yaml\Yaml;
 use YamlConfig\StructureCodeGenerator\ConfigStructureTreeGenerator;
+use YamlConfig\YamlFileToTree;
 
 
 /** Генератор структуры классов конфига */
 class ConfigClassTreeGenerator extends ConfigStructureTreeGenerator
 {
 
-    /** @var string относительный путь расположения yaml-файл с настройками для интерфейса */
-    protected $configInterfaceRelativePath;
+    /** @var YamlFileToTree относительный путь расположения yaml-файл с настройками для интерфейса */
+    protected $yamlFileToTreeInterface;
 
     /** @var string пространство имён конфига интерфейса */
     protected $configInterfaceNamespace;
-
-    /** @var array дерево конфигурации интерфейсов yaml */
-    protected $yamlConfigInterfaceTree;
-
-    /** @var string содержимое конфигурации yaml для интерфейса */
-    protected $yamlConfigInterfaceContent;
-
     /**
-     * @return string относительный путь расположения yaml-файл с настройками для интерфейса
+     * @return YamlFileToTree|null
      */
-    public function getConfigInterfaceRelativePath()
+    public function getYamlFileToTreeInterface(): ?YamlFileToTree
     {
-        return $this->configInterfaceRelativePath;
+        return $this->yamlFileToTreeInterface;
     }
 
     /**
-     * @param string $configInterfaceRelativePath
+     * @param YamlFileToTree|null $yamlFileToTreeInterface
      * @return $this
      */
-    public function setConfigInterfaceRelativePath(string $configInterfaceRelativePath = null)
+    public function setYamlFileToTreeInterface(YamlFileToTree $yamlFileToTreeInterface = null)
     {
-        $this->configInterfaceRelativePath = $configInterfaceRelativePath;
+        $this->yamlFileToTreeInterface = $yamlFileToTreeInterface;
         return $this;
     }
 
@@ -72,49 +66,10 @@ class ConfigClassTreeGenerator extends ConfigStructureTreeGenerator
     protected function createStructureInfoList()
     {
         return $this->createClassInfoList()
-            ->setYamlConfigInterfaceTree($this->getYamlConfigInterfaceTree())
+            ->setYamlFileToTreeInterface($this->getYamlFileToTreeInterface())
             ->setConfigInterfaceNamespace($this->getConfigInterfaceNamespace());
     }
 
-    /**
-     * @return string полный путь к конфигу интерфейса
-     */
-    public function getConfigInterfaceFullPath()
-    {
-        if(is_null($this->getConfigInterfaceRelativePath())) {
-            return null;
-        }
-        return $this->getProjectPath().
-            DIRECTORY_SEPARATOR.
-            $this->getConfigInterfaceRelativePath();
-    }
-
-    /**
-     * @return string содержимое конфига yaml интерфейса
-     */
-    protected function getYamlConfigInterfaceContent()
-    {
-        if(is_null($this->yamlConfigInterfaceContent)){
-            $this->yamlConfigInterfaceContent = file_get_contents(
-                $this->getConfigInterfaceFullPath()
-            );
-        }
-        return $this->yamlConfigInterfaceContent;
-    }
-
-    /**
-     * @return array массив дерева конфига интерфейса
-     */
-    protected function getYamlConfigInterfaceTree()
-    {
-        if(is_null($this->yamlConfigInterfaceTree)){
-            $this->yamlConfigInterfaceTree = Yaml::parse(
-                $this->getYamlConfigInterfaceContent()
-            );
-        }
-
-        return $this->yamlConfigInterfaceTree;
-    }
 
     protected function createConfigStructureGenerator($configStructureInfo)
     {

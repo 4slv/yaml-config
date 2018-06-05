@@ -3,7 +3,7 @@
 namespace YamlConfig\StructureCodeGenerator;
 
 use Slov\Helper\ArrayHelper;
-use YamlConfig\YamlCommentsParser;
+use YamlConfig\YamlFileToTree;
 
 /** Список информации о структурах */
 class StructureInfoList implements StructureInfoListInterface
@@ -11,17 +11,30 @@ class StructureInfoList implements StructureInfoListInterface
     /** @var ConfigStructureInfoInterface[] список информации о структуре конфига */
     protected $structureInfoList;
 
-    /** @var string полный путь к конфигу  */
-    protected $configFullPath;
-
     /** @var string пространство имён конфига */
     protected $configNamespace;
 
-    /** @var string[] комментарии к узлам конфига */
-    protected $configNodeComments;
+    /** @var YamlFileToTree Класс работы с файлом yaml */
+    protected $yamlFileToTree;
 
-    /** @var string содержимое конфигурации yaml */
-    protected $yamlConfigContent;
+    /**
+     * @return YamlFileToTree|null
+     */
+    public function getYamlFileToTree(): ?YamlFileToTree
+    {
+        return $this->yamlFileToTree;
+    }
+
+    /**
+     * @param YamlFileToTree $yamlFileToTree
+     * @return $this;
+     */
+    public function setYamlFileToTree(YamlFileToTree $yamlFileToTree = null)
+    {
+        $this->yamlFileToTree = $yamlFileToTree;
+        return $this;
+    }
+
 
     public function getStructureInfoList()
     {
@@ -34,19 +47,6 @@ class StructureInfoList implements StructureInfoListInterface
     protected function setStructureInfoList($structureInfoList)
     {
         $this->structureInfoList = $structureInfoList;
-    }
-
-    /**
-     * @return string полный путь к конфигу
-     */
-    protected function getConfigFullPath()
-    {
-        return $this->configFullPath;
-    }
-
-    public function setConfigFullPath($configFullPath)
-    {
-        $this->configFullPath = $configFullPath;
     }
 
     /**
@@ -86,18 +86,6 @@ class StructureInfoList implements StructureInfoListInterface
         return new UseStructure();
     }
 
-    /**
-     * @return string содержимое конфига yaml
-     */
-    protected function getYamlConfigContent()
-    {
-        if(is_null($this->yamlConfigContent)){
-            $this->yamlConfigContent = file_get_contents(
-                $this->getConfigFullPath()
-            );
-        }
-        return $this->yamlConfigContent;
-    }
 
     /**
      * @param ConfigStructureInfoInterface $configStructureInfo добавление информации о структуре в список
@@ -267,23 +255,10 @@ class StructureInfoList implements StructureInfoListInterface
     protected function getCommentByPath(array $pathPartList, $pathSeparator = '.')
     {
         $path = implode($pathSeparator, $pathPartList);
-        $configNodeComments = $this->getConfigNodeComments();
+        $configNodeComments = $this->getYamlFileToTree()->getConfigNodeComments();
         if(array_key_exists($path, $configNodeComments)){
             return $configNodeComments[$path];
         }
     }
 
-    /**
-     * @return string[] комментарии к узлам конфига
-     */
-    protected function getConfigNodeComments()
-    {
-        if(is_null($this->configNodeComments)){
-            $this->configNodeComments = YamlCommentsParser::parse(
-                $this->getYamlConfigContent()
-            );
-        }
-
-        return $this->configNodeComments;
-    }
 }

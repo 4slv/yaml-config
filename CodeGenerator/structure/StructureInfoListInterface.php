@@ -2,6 +2,8 @@
 
 namespace YamlConfig\StructureCodeGenerator;
 
+use YamlConfig\YamlFileToTree;
+
 /** Список информации о структурах */
 interface StructureInfoListInterface
 {
@@ -11,9 +13,9 @@ interface StructureInfoListInterface
     public function getStructureInfoList();
 
     /**
-     * @param string $configFullPath полный путь к конфигу
+     * @param YamlFileToTree $yamlFileToTree полный путь к конфигу
      */
-    public function setConfigFullPath($configFullPath);
+    public function setYamlFileToTree(YamlFileToTree $yamlFileToTree);
 
     /**
      * @param string $configNamespace пространство имён конфига

@@ -5,25 +5,37 @@ namespace YamlConfig\ClassCodeGenerator;
 use YamlConfig\StructureCodeGenerator\ConfigStructureInfoInterface;
 use YamlConfig\StructureCodeGenerator\StructureInfoList;
 use YamlConfig\StructureCodeGenerator\UseStructure;
+use YamlConfig\YamlFileToTree;
 
 /** Список информации о классах */
 class ClassInfoList extends StructureInfoList
 {
 
-    /** @var array дерево конфигурации интерфейсов yaml */
-    protected $yamlConfigInterfaceTree = [];
 
     /** @var string пространство имён интерфейса узла конфига */
     protected $configInterfaceNamespace;
 
+    /** @var YamlFileToTree относительный путь расположения yaml-файл с настройками для интерфейса */
+    protected $yamlFileToTreeInterface;
+
     /**
-     *
-     * @return array дерево конфигурации интерфейсов yaml
+     * @return YamlFileToTree|null
      */
-    public function getYamlConfigInterfaceTree()
+    public function getYamlFileToTreeInterface(): ?YamlFileToTree
     {
-        return $this->yamlConfigInterfaceTree;
+        return $this->yamlFileToTreeInterface;
     }
+
+    /**
+     * @param YamlFileToTree|null $yamlFileToTreeInterface
+     * @return $this
+     */
+    public function setYamlFileToTreeInterface(YamlFileToTree $yamlFileToTreeInterface = null)
+    {
+        $this->yamlFileToTreeInterface = $yamlFileToTreeInterface;
+        return $this;
+    }
+
 
     /**
      * @return ConfigStructureInfoInterface информация о структуре конфига
@@ -41,18 +53,6 @@ class ClassInfoList extends StructureInfoList
         return new UseStructure();
     }
 
-    /**
-     *
-     * @param array $yamlConfigInterfaceTree массив дерева конфига интерфейса
-     * @return $this
-     */
-    public function setYamlConfigInterfaceTree(array $yamlConfigInterfaceTree = null)
-    {
-        if(is_null($yamlConfigInterfaceTree))
-            $yamlConfigInterfaceTree = [];
-        $this->yamlConfigInterfaceTree = $yamlConfigInterfaceTree;
-        return $this;
-    }
 
     /**
      * @return string пространство имён интерфейса узла конфига
@@ -91,10 +91,13 @@ class ClassInfoList extends StructureInfoList
     protected function fillInterfaceList(ConfigClassInfo $configClassInfo, array $structureNode, array $path)
     {
         if(
+            $this->getYamlFileToTreeInterface()
+            &&
             $this->iStructureNode($structureNode)
             &&
             $this->getInterfaceStructureNodeByNodePath($this->getNodePath($path)) !== null
         ){
+            dump($this->getInterfaceStructureNodeByNodePath($this->getNodePath($path)),$structureNode,$this->getConfigInterfaceNamespace());
             $interfaceNamespace = $this->getNamespaceByPath($this->getConfigInterfaceNamespace(), $path);
             $interfaceFullName = $interfaceNamespace. '\\'. $configClassInfo->getName();
             $interfaceAlias = $this->generateInterfaceAlias($configClassInfo->getName());
@@ -115,7 +118,7 @@ class ClassInfoList extends StructureInfoList
      */
     protected function getInterfaceStructureNodeByNodePath(array $nodePath)
     {
-        $out = $this->getYamlConfigInterfaceTree();
+        $out = $this->getYamlFileToTreeInterface()->getYamlConfigTree();
         if(empty($out)){
             return null;
         }
