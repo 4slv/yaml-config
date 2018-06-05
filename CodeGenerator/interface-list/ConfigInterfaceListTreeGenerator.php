@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: r.shustrov
- * Date: 6/1/2018
- * Time: 12:59 PM
- */
 
 namespace YamlConfig\InterfaceListCodeGenerator;
 
