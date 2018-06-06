@@ -115,36 +115,33 @@ class ClassInfoList extends StructureInfoList
         if(
             $this->getYamlFileToTreeInterfaceList()
         ) {
-            $interfaceName = $this->getInterfaceListNameByPath($path);
-            if(is_null($interfaceName)){
-                return;
+            foreach($this->getInterfaceListNameByPath($path) as $interfaceName) {
+                $interfaceFullName = $this->getConfigInterfaceNamespace() . '\\' . $interfaceName;
+                $interfaceAlias = $this->generateInterfaceAlias($interfaceName);
+                $useStructure = $this
+                    ->createUseStructure()
+                    ->setStructureFullName($interfaceFullName)
+                    ->setAlias($interfaceAlias);
+                $configClassInfo->addUseClasses($useStructure);
+                $configClassInfo->addImplements($interfaceAlias);
             }
-            $interfaceName = $this->fixStructureName($interfaceName);
-            $interfaceFullName = $this->getConfigInterfaceNamespace(). '\\'.$interfaceName;
-            $interfaceAlias = $this->generateInterfaceAlias($interfaceName);
-
-            $useStructure = $this
-                ->createUseStructure()
-                ->setStructureFullName($interfaceFullName)
-                ->setAlias($interfaceAlias);
-
-            $configClassInfo->addUseClasses($useStructure);
-            $configClassInfo->addImplements($interfaceAlias);
         }
     }
 
     /**
-     * @param array $path
-     * @return null|string
+     * Масив имен интерфейсов
+     * @param string[] $path
+     * @return string[]
      */
     protected function getInterfaceListNameByPath(array $path)
     {
+        $out = [];
         foreach($this->getYamlFileToTreeInterfaceList()->getYamlConfigTree() as $interfaceName => $intertfaceConfig){
             if($this->inArrayXpath($path,$intertfaceConfig['xpath'])){
-                return $interfaceName;
+                $out[] = $this->fixStructureName($interfaceName);
             }
         }
-        return null;
+        return $out;
     }
 
     /**
