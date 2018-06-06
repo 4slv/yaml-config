@@ -154,7 +154,8 @@ class YamlFileToTree
     /**
      * @param string $xpath
      * @param string $rootNode
-     * @return DOMNodeList
+     * @return DOMNodeList|false
+     * @return DOMNodeList|false
      */
     public function getDOMNodeListByXpath(string $xpath, string $rootNode = 'root')
     {

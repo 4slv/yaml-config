@@ -152,7 +152,11 @@ class ClassInfoList extends StructureInfoList
     protected function inArrayXpath(array $path, array $xpaths)
     {
         foreach($xpaths as $xpath){
-            foreach($this->getYamlFileToTree()->getDOMNodeListByXpath($xpath) as $domdElement){
+            $domNodeList = $this->getYamlFileToTree()->getDOMNodeListByXpath($xpath);
+            if($domNodeList == false){
+                return false;
+            }
+            foreach($domNodeList as $domdElement){
                 $pathDomdElement = explode('/',ltrim($domdElement->getNodePath(),'/'));
                 if($this->getNodePath($pathDomdElement) == $this->getNodePath($path)){
                     return true;

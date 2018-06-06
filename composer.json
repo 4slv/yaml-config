@@ -17,11 +17,11 @@
     },
     "autoload": {
         "psr-4": {
-            "YamlConfig\\": "/",
-            "YamlConfig\\StructureCodeGenerator\\": "/CodeGenerator/structure",
-            "YamlConfig\\ClassCodeGenerator\\": "/CodeGenerator/class",
-            "YamlConfig\\InterfaceCodeGenerator\\": "/CodeGenerator/interface",
-            "YamlConfig\\InterfaceListCodeGenerator\\": "/CodeGenerator/interface-list"
+            "YamlConfig\\": "",
+            "YamlConfig\\StructureCodeGenerator\\": "CodeGenerator/structure",
+            "YamlConfig\\ClassCodeGenerator\\": "CodeGenerator/class",
+            "YamlConfig\\InterfaceCodeGenerator\\": "CodeGenerator/interface",
+            "YamlConfig\\InterfaceListCodeGenerator\\": "CodeGenerator/interface-list"
         }
     }
 }
