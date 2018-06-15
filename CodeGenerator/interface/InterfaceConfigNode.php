@@ -31,6 +31,6 @@ interface InterfaceConfigNode
      * @param string $children существование свойства
      * @return bool
      */
-    public function issetChildren(string $children);
+    public function issetChildrenByName(string $children);
 
 }
