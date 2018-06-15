@@ -21,9 +21,16 @@ interface InterfaceConfigNode
      * @return array ассоциативный массив свойств
      */
     public function children();
+
     /**
      * @return string имя текущего свойства конфига
      */
     public function getConfigName();
+
+    /**
+     * @param string $children существование свойства
+     * @return bool
+     */
+    public function issetChildren(string $children);
 
 }
