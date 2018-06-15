@@ -18,8 +18,8 @@ interface InterfaceConfigNode
     public function getActualDate();
 
     /**
-     * @return array ассоциативный массив свойств
+     * @return string имя текущего свойства конфига
      */
-    public function children();
+    public function getConfigName();
 
 }
