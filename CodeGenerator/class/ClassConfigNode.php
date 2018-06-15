@@ -77,9 +77,9 @@ abstract class ClassConfigNode
      * @param string $children существование свойства
      * @return bool
      */
-    public function issetChildren(string $children)
+    public function issetChildrenByName(string $children)
     {
-        return in_array($children, $this->children());
+        return isset($this->children()[$children]);
     }
 
     /**
