@@ -4,6 +4,7 @@ namespace YamlConfig\ClassCodeGenerator;
 
 use DateTime;
 use Slov\Helper\ArrayHelper;
+use ReflectionClass;
 
 /** Класс узла конфига */
 abstract class ClassConfigNode
@@ -70,5 +71,13 @@ abstract class ClassConfigNode
             }
         }
         return $children;
+    }
+
+    /**
+     * @return string имя текущего свойства конфига
+     */
+    public function getConfigName()
+    {
+        return (new ReflectionClass($this))->getShortName();
     }
 }
