@@ -136,8 +136,8 @@ class ClassInfoList extends StructureInfoList
     protected function getInterfaceListNameByPath(array $path)
     {
         $out = [];
-        foreach($this->getYamlFileToTreeInterfaceList()->getYamlConfigTree() as $interfaceName => $intertfaceConfig){
-            if($this->inArrayXpath($path,$intertfaceConfig['xpath'])){
+        foreach($this->getYamlFileToTreeInterfaceList()->getYamlConfigTree() as $interfaceName => $interfaceConfig){
+            if($this->inArrayXpath($path,$interfaceConfig['xpath'])){
                 $out[] = $this->fixStructureName($interfaceName);
             }
         }
@@ -146,19 +146,19 @@ class ClassInfoList extends StructureInfoList
 
     /**
      * @param array $path
-     * @param array $xpaths
+     * @param array $xpathList
      * @return bool
      */
-    protected function inArrayXpath(array $path, array $xpaths)
+    protected function inArrayXpath(array $path, array $xpathList)
     {
-        foreach($xpaths as $xpath){
+        foreach($xpathList as $xpath){
             $domNodeList = $this->getYamlFileToTree()->getDOMNodeListByXpath($xpath);
             if($domNodeList == false){
                 return false;
             }
-            foreach($domNodeList as $domdElement){
-                $pathDomdElement = explode('/',ltrim($domdElement->getNodePath(),'/'));
-                if($this->getNodePath($pathDomdElement) == $this->getNodePath($path)){
+            foreach($domNodeList as $domElement){
+                $pathDomElement = explode('/',ltrim($domElement->getNodePath(),'/'));
+                if($this->getNodePath($pathDomElement) == $this->getNodePath($path)){
                     return true;
                 }
             }

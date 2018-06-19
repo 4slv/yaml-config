@@ -2,7 +2,8 @@
 
 namespace YamlConfig\ClassCodeGenerator;
 
-use Symfony\Component\Yaml\Yaml;
+use YamlConfig\StructureCodeGenerator\ConfigStructureGenerator;
+use YamlConfig\StructureCodeGenerator\ConfigStructureInfoInterface;
 use YamlConfig\StructureCodeGenerator\ConfigStructureTreeGenerator;
 use YamlConfig\YamlFileToTree;
 
@@ -11,17 +12,17 @@ use YamlConfig\YamlFileToTree;
 class ConfigClassTreeGenerator extends ConfigStructureTreeGenerator
 {
 
-    /** @var YamlFileToTree относительный путь расположения yaml-файл с настройками для интерфейса */
+    /** @var YamlFileToTree преобразователь конфигурационного файла в конфигурацию для интерфейса */
     protected $yamlFileToTreeInterface;
 
     /** @var string пространство имён конфига интерфейса */
     protected $configInterfaceNamespace;
 
-    /** @var YamlFileToTree относительный путь расположения yaml-файл с настройками для интерфейса(список) */
+    /** @var YamlFileToTree преобразователь конфигурационного файла в конфигурацию для интерфейса(список) */
     protected $yamlFileToTreeInterfaceList;
 
     /**
-     * @return YamlFileToTree|null
+     * @return YamlFileToTree|null преобразователь конфигурационного файла в конфигурацию для интерфейса
      */
     public function getYamlFileToTreeInterface(): ?YamlFileToTree
     {
@@ -93,7 +94,10 @@ class ConfigClassTreeGenerator extends ConfigStructureTreeGenerator
             ->setConfigInterfaceNamespace($this->getConfigInterfaceNamespace());
     }
 
-
+    /**
+     * @param ConfigStructureInfoInterface $configStructureInfo информация о структуре конфига
+     * @return ConfigStructureGenerator генератор структуры конфига
+     */
     protected function createConfigStructureGenerator($configStructureInfo)
     {
         $configClassGenerator = new ConfigClassGenerator();

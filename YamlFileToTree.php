@@ -8,6 +8,7 @@ use DOMDocument;
 use DOMXpath;
 use DOMNodeList;
 
+/** Преобразователь конфигурационного файла в конфигурацию */
 class YamlFileToTree
 {
 
@@ -27,10 +28,10 @@ class YamlFileToTree
     protected $configNodeComments;
 
     /** @var DOMDocument дерево конфигурации yaml */
-    protected $yamlConfigDomd;
+    protected $yamlConfigDom;
 
     /** @var DOMNodeList[] дерево конфигурации yaml */
-    protected $yamlConfigDomdNodeList;
+    protected $yamlConfigDomNodeList;
 
 
     /**
@@ -127,27 +128,27 @@ class YamlFileToTree
      */
     public function getTreeAsDOMDocument($rootNode = 'root')
     {
-        if(is_null($this->yamlConfigDomd) && !is_null($this->getYamlConfigTree())) {
-            $this->yamlConfigDomd = new DOMDocument('1.0', 'UTF-8');
-            $this->yamlConfigDomd->formatOutput = true;
-            $root = $this->yamlConfigDomd->createElement($rootNode);
-            $this->yamlConfigDomd->appendChild($root);
+        if(is_null($this->yamlConfigDom) && !is_null($this->getYamlConfigTree())) {
+            $this->yamlConfigDom = new DOMDocument('1.0', 'UTF-8');
+            $this->yamlConfigDom->formatOutput = true;
+            $root = $this->yamlConfigDom->createElement($rootNode);
+            $this->yamlConfigDom->appendChild($root);
             $array2xml = function ($node, $array) use (&$array2xml) {
                 foreach ($array as $key => $value) {
                     if (is_array($value)) {
-                        $n = $this->yamlConfigDomd->createElement($key);
+                        $n = $this->yamlConfigDom->createElement($key);
                         $node->appendChild($n);
                         $array2xml($n, $value);
                     } else {
-                        $node2 = $this->yamlConfigDomd->createElement(is_numeric($key) ? 'item' : $key);
+                        $node2 = $this->yamlConfigDom->createElement(is_numeric($key) ? 'item' : $key);
                         $node->appendChild($node2);
-                        $node2->appendChild($this->yamlConfigDomd->createTextNode($value));
+                        $node2->appendChild($this->yamlConfigDom->createTextNode($value));
                     }
                 }
             };
             $array2xml($root, $this->getYamlConfigTree());
         }
-        return $this->yamlConfigDomd;
+        return $this->yamlConfigDom;
     }
 
 
@@ -159,10 +160,10 @@ class YamlFileToTree
      */
     public function getDOMNodeListByXpath(string $xpath, string $rootNode = 'root')
     {
-        if(isset($this->yamlConfigDomdNodeList[$xpath])){
-            return $this->yamlConfigDomdNodeList[$xpath];
+        if(isset($this->yamlConfigDomNodeList[$xpath])){
+            return $this->yamlConfigDomNodeList[$xpath];
         }
-        return $this->yamlConfigDomdNodeList[$xpath] = (new DOMXpath($this->getTreeAsDOMDocument($rootNode)))->query(
+        return $this->yamlConfigDomNodeList[$xpath] = (new DOMXpath($this->getTreeAsDOMDocument($rootNode)))->query(
             '/'.$rootNode.$xpath
         );
     }

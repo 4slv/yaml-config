@@ -21,11 +21,11 @@ abstract class ConfigStructureTreeGenerator
     /** @var string название структуры конфига */
     protected $configName;
 
-    /** @var YamlFileToTree Класс работы с файлом yaml */
+    /** @var YamlFileToTree преобразователь конфигурационного файла в конфигурацию */
     protected $yamlFileToTree;
 
     /**
-     * @return YamlFileToTree|null
+     * @return YamlFileToTree|null преобразователь конфигурационного файла в конфигурацию
      */
     public function getYamlFileToTree(): ?YamlFileToTree
     {
@@ -33,7 +33,7 @@ abstract class ConfigStructureTreeGenerator
     }
 
     /**
-     * @param YamlFileToTree|null $yamlFileToTree
+     * @param YamlFileToTree|null $yamlFileToTree преобразователь конфигурационного файла в конфигурацию
      * @return $this
      */
     public function setYamlFileToTree(YamlFileToTree $yamlFileToTree = null)
