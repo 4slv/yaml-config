@@ -18,6 +18,10 @@ abstract class ConfigStructureGenerator implements ConfigStructureGeneratorInter
         return $this->structureInfo;
     }
 
+    /**
+     * @param ConfigStructureInfoInterface $structureInfo
+     * @return $this
+     */
     public function setStructureInfo($structureInfo)
     {
         $this->structureInfo = $structureInfo;

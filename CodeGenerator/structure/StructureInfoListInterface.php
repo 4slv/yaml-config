@@ -13,7 +13,7 @@ interface StructureInfoListInterface
     public function getStructureInfoList();
 
     /**
-     * @param YamlFileToTree $yamlFileToTree полный путь к конфигу
+     * @param YamlFileToTree $yamlFileToTree преобразователь конфигурационного файла в конфигурацию
      */
     public function setYamlFileToTree(YamlFileToTree $yamlFileToTree);
 
