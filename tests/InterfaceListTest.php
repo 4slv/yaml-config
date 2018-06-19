@@ -9,7 +9,7 @@ $autoload = require __DIR__.DIRECTORY_SEPARATOR."../vendor/autoload.php";
  * @var $autoload Composer\Autoload\ClassLoader
  */
 
-class InterfaceListTest
+class InterfaceListTest extends PHPUnit\Framework\TestCase
 {
 
     const PROJECT_FOLDER = __DIR__.DIRECTORY_SEPARATOR.'InterfaceListTest'.DIRECTORY_SEPARATOR.'tmp';
@@ -19,13 +19,13 @@ class InterfaceListTest
     const REFERENCE_FOLDER = __DIR__.DIRECTORY_SEPARATOR.'InterfaceListTest'.DIRECTORY_SEPARATOR.'reference';
 
     const FILE_NAME = 'test.yaml';
-    const CODE_RELATIVE_PATH = 'Test';
-    const NAME = 'Test';
-    const NAMESPACE = 'Test';
+    const CODE_RELATIVE_PATH = 'TestCode';
+    const NAME = 'TestCode';
+    const NAMESPACE = 'TestCode';
 
     const INTERFACE_FILE_NAME = 'test.interface.yaml';
-    const INTERFACE_CODE_RELATIVE_PATH = 'Interfaces/Test';
-    const INTERFACE_NAMESPACE = 'Interfaces\\Test';
+    const INTERFACE_CODE_RELATIVE_PATH = 'Interfaces/TestCode';
+    const INTERFACE_NAMESPACE = 'Interfaces\\TestCode';
 
 
     /**
@@ -48,10 +48,10 @@ class InterfaceListTest
      */
     protected function createConfigInterfaceListGenerator()
     {
-        return (new ConfigInterfaceListTreeGenerator())->setProjectPath(static::PROJECT_FOLDER);;
+        return (new ConfigInterfaceListTreeGenerator())->setProjectPath(static::PROJECT_FOLDER);
     }
 
-    public function start()
+    public function testInterfaceListTest()
     {
         $this->recreateFolder();
         $this->generatInterface();
@@ -119,24 +119,11 @@ class InterfaceListTest
             if($file->isFile()) {
                 $filePathReference = $file->getPathname();
                 $filePathResult =  substr_replace($filePathReference,static::PROJECT_FOLDER,0,strlen(static::REFERENCE_FOLDER));
-                if(!is_file($filePathResult)) {
-                    $result = false;
-                    echo "Файл не создан: ".$filePathResult.PHP_EOL;
-                    continue;
-                };
-                if(md5_file($filePathReference) != md5_file($filePathResult)){
-                    $result = false;
-                    echo "Файл ".$filePathResult." не соответствует оригиналу ".$filePathReference.PHP_EOL;
-                    continue;
-                }
+                $this->assertTrue(is_file($filePathResult));
+                $this->assertEquals(file_get_contents($filePathReference),file_get_contents($filePathResult));
             }
-        }
-        if($result){
-            echo "Тест успешно пройден ".PHP_EOL;
         }
     }
 
 
 }
-
-(new InterfaceListTest)->start();

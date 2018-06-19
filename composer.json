@@ -23,5 +23,8 @@
             "YamlConfig\\InterfaceCodeGenerator\\": "CodeGenerator/interface",
             "YamlConfig\\InterfaceListCodeGenerator\\": "CodeGenerator/interface-list"
         }
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^7.2"
     }
 }

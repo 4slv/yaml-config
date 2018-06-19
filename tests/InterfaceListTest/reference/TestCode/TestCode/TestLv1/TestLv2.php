@@ -1,31 +1,17 @@
 <?php
 
-namespace Test;
+namespace TestCode\TestCode\TestLv1;
 
 use YamlConfig\ClassCodeGenerator\ClassConfigNode;
-use Test\Test\TestLv1;
-use Test\Test\NeedleObject;
+use Interfaces\TestCode\TestLv2 as TestLv2Interface;
+use TestCode\TestCode\TestLv1\TestLv2\NeedleObject;
 
 
-class Test extends ClassConfigNode 
+class TestLv2 extends ClassConfigNode implements TestLv2Interface
 {
-
-    /** @var TestLv1  */
-    protected $testLv1;
 
     /** @var NeedleObject  */
     protected $needleObject;
-
-    /** @return TestLv1  */
-    public function getTestLv1()
-    {
-        if(is_null($this->testLv1)){
-            $this->testLv1 = new TestLv1(
-                $this->getActualDate()
-            );
-        }
-        return $this->testLv1;
-    }
 
     /** @return NeedleObject  */
     public function getNeedleObject()

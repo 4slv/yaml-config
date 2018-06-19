@@ -1,6 +1,6 @@
 <?php
 
-namespace Interfaces\Test;
+namespace Interfaces\TestCode;
 
 use YamlConfig\InterfaceCodeGenerator\InterfaceConfigNode;
 

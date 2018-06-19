@@ -1,9 +1,9 @@
 <?php
 
-namespace Test\Test;
+namespace TestCode\TestCode;
 
 use YamlConfig\ClassCodeGenerator\ClassConfigNode;
-use Interfaces\Test\NeedleObject as NeedleObjectInterface;
+use Interfaces\TestCode\NeedleObject as NeedleObjectInterface;
 
 
 class NeedleObject extends ClassConfigNode implements NeedleObjectInterface

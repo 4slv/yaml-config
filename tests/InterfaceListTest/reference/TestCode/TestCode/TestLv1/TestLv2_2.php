@@ -1,9 +1,9 @@
 <?php
 
-namespace Test\Test\TestLv1;
+namespace TestCode\TestCode\TestLv1;
 
 use YamlConfig\ClassCodeGenerator\ClassConfigNode;
-use Test\Test\TestLv1\TestLv2_2\TestLv3;
+use TestCode\TestCode\TestLv1\TestLv2_2\TestLv3;
 
 
 class TestLv2_2 extends ClassConfigNode 
