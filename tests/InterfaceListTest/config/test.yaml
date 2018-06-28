@@ -3,6 +3,9 @@ testLv1:
     needleObject:
       param1: 1
       param2: 2
+    needleObject2:
+      param1: 1
+      param2: 2
   testLv2_2:
     testLv3:
       needleObject:

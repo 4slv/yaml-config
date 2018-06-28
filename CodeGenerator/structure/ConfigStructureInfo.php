@@ -72,7 +72,9 @@ class ConfigStructureInfo implements ConfigStructureInfoInterface
 
     public function addUseClasses(UseStructure $useStructure)
     {
-        $this->useClasses[] = $useStructure;
+        if(!in_array($useStructure,$this->useClasses)) {
+            $this->useClasses[] = $useStructure;
+        }
     }
 
     public function addPropertyList($classPropertyList)

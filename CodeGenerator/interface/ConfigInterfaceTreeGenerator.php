@@ -17,11 +17,4 @@ class ConfigInterfaceTreeGenerator extends ConfigStructureTreeGenerator
         return $configClassGenerator->setStructureInfo($configStructureInfo);
     }
 
-    /**
-     * @return StructureInfoListInterface список информации об интерфейсах
-     */
-    protected function createStructureInfoList()
-    {
-        return new StructureInfoList();
-    }
 }

@@ -18,6 +18,9 @@ class ConfigClassTreeGenerator extends ConfigStructureTreeGenerator
     /** @var string пространство имён конфига интерфейса */
     protected $configInterfaceNamespace;
 
+    /** @var string пространство имён конфига интерфейса */
+    protected $configInterfaceListNamespace;
+
     /** @var YamlFileToTree преобразователь конфигурационного файла в конфигурацию для интерфейса(список) */
     protected $yamlFileToTreeInterfaceList;
 
@@ -76,6 +79,24 @@ class ConfigClassTreeGenerator extends ConfigStructureTreeGenerator
     }
 
     /**
+     * @return string пространство имён конфига
+     */
+    protected function getConfigInterfaceListNamespace()
+    {
+        return $this->configInterfaceListNamespace;
+    }
+
+    /**
+     * @param string $configInterfaceListNamespace пространство имён конфига для и нтерфейса
+     * @return $this
+     */
+    public function setConfigInterfaceListNamespace($configInterfaceListNamespace)
+    {
+        $this->configInterfaceListNamespace = $configInterfaceListNamespace;
+        return $this;
+    }
+
+    /**
      * @return ClassInfoList список информации о классах
      */
     protected function createClassInfoList()
@@ -91,7 +112,8 @@ class ConfigClassTreeGenerator extends ConfigStructureTreeGenerator
         return $this->createClassInfoList()
             ->setYamlFileToTreeInterface($this->getYamlFileToTreeInterface())
             ->setYamlFileToTreeInterfaceList($this->getYamlFileToTreeInterfaceList())
-            ->setConfigInterfaceNamespace($this->getConfigInterfaceNamespace());
+            ->setConfigInterfaceNamespace($this->getConfigInterfaceNamespace())
+            ->setConfigInterfaceListNamespace($this->getConfigInterfaceListNamespace());
     }
 
     /**

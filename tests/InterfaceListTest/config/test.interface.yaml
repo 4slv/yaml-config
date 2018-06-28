@@ -13,3 +13,5 @@ testLv2:
   property:
       needleObject:
         type: needleObject
+      needleObject2:
+        type: needleObject

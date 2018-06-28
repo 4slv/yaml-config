@@ -15,6 +15,9 @@ class ClassInfoList extends StructureInfoList
     /** @var string пространство имён интерфейса узла конфига */
     protected $configInterfaceNamespace;
 
+    /** @var string пространство имён интерфейса узла конфига */
+    protected $configInterfaceListNamespace;
+
     /** @var YamlFileToTree относительный путь расположения yaml-файл с настройками для интерфейса */
     protected $yamlFileToTreeInterface;
 
@@ -94,6 +97,24 @@ class ClassInfoList extends StructureInfoList
     }
 
     /**
+     * @return string пространство имён интерфейса узла конфига
+     */
+    protected function getConfigInterfaceListNamespace()
+    {
+        return $this->configInterfaceListNamespace;
+    }
+
+    /**
+     * @param string $configInterfaceListNamespace пространство имён интерфейса узла конфига
+     * @return $this
+     */
+    public function setConfigInterfaceListNamespace($configInterfaceListNamespace)
+    {
+        $this->configInterfaceListNamespace = $configInterfaceListNamespace;
+        return $this;
+    }
+
+    /**
      * @param ConfigClassInfo $configStructureInfo
      * @param array $structureNode узел структуры для $configStructureInfo
      * @param array $path путь в виде масива к узлу
@@ -116,7 +137,7 @@ class ClassInfoList extends StructureInfoList
             $this->getYamlFileToTreeInterfaceList()
         ) {
             foreach($this->getInterfaceListNameByPath($path) as $interfaceName) {
-                $interfaceFullName = $this->getConfigInterfaceNamespace() . '\\' . $interfaceName;
+                $interfaceFullName = $this->getConfigInterfaceListNamespace() . '\\' . $interfaceName;
                 $interfaceAlias = $this->generateInterfaceAlias($interfaceName);
                 $useStructure = $this
                     ->createUseStructure()
