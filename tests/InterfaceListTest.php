@@ -4,7 +4,6 @@ use YamlConfig\ClassCodeGenerator\ConfigClassTreeGenerator;
 use YamlConfig\YamlFileToTree;
 use YamlConfig\InterfaceListCodeGenerator\ConfigInterfaceListTreeGenerator;
 
-$autoload = require __DIR__.DIRECTORY_SEPARATOR."../vendor/autoload.php";
 /**
  * @var $autoload Composer\Autoload\ClassLoader
  */
@@ -114,7 +113,6 @@ class InterfaceListTest extends PHPUnit\Framework\TestCase
     {
         $directory = new RecursiveDirectoryIterator(static::REFERENCE_FOLDER);
         $iterator = new RecursiveIteratorIterator($directory);
-        $result = true;
         foreach($iterator as $file){
             if($file->isFile()) {
                 $filePathReference = $file->getPathname();
