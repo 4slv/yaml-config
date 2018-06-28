@@ -11,4 +11,7 @@ interface TestLv2 extends InterfaceConfigNode {
     /** @return needleObject  */
     public function getNeedleObject();
 
+    /** @return needleObject  */
+    public function getNeedleObject2();
+
 }

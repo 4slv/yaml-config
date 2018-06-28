@@ -1,12 +1,12 @@
 <?php
 
-namespace TestCode\TestCode;
+namespace TestCode\TestCode\TestLv1\TestLv2;
 
 use YamlConfig\ClassCodeGenerator\ClassConfigNode;
 use \NeedleObject as NeedleObjectInterface;
 
 
-class NeedleObject extends ClassConfigNode implements NeedleObjectInterface
+class NeedleObject2 extends ClassConfigNode implements NeedleObjectInterface
 {
 
     /** @var integer  */

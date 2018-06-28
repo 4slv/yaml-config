@@ -3,7 +3,7 @@
 namespace TestCode\TestCode\TestLv1\TestLv2_2\TestLv3;
 
 use YamlConfig\ClassCodeGenerator\ClassConfigNode;
-use Interfaces\TestCode\NeedleObject as NeedleObjectInterface;
+use \NeedleObject as NeedleObjectInterface;
 
 
 class NeedleObject extends ClassConfigNode implements NeedleObjectInterface
