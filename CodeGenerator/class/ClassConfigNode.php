@@ -18,7 +18,7 @@ abstract class ClassConfigNode
     public function __construct(DateTime $actualDate = null)
     {
         $this->actualDate = isset($actualDate)
-            ? $actualDate
+            ? clone $actualDate
             : new DateTime();
         $this->actualDate->setTime(0,0);
     }
