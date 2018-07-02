@@ -12,87 +12,89 @@ use YamlConfig\YamlFileToTree;
 class ConfigClassTreeGenerator extends ConfigStructureTreeGenerator
 {
 
-    /** @var YamlFileToTree преобразователь конфигурационного файла в конфигурацию для интерфейса */
-    protected $yamlFileToTreeInterface;
 
-    /** @var string пространство имён конфига интерфейса */
-    protected $configInterfaceNamespace;
 
-    /** @var string пространство имён конфига интерфейса */
-    protected $configInterfaceListNamespace;
+    /** @var string пространство имён иерархических интерфейсов для узлов конфига */
+    protected $configHierarchicalInterfacesNamespace;
 
-    /** @var YamlFileToTree преобразователь конфигурационного файла в конфигурацию для интерфейса(список) */
-    protected $yamlFileToTreeInterfaceList;
+    /** @var string пространство имён описанных интерфейсов для узлов конфига */
+    protected $configDescribedInterfacesNamespace;
+
+    /** @var YamlFileToTree преобразователь конфигурационного файла в конфигурацию для иерархических интерфейсов */
+    protected $yamlFileToTreeHierarchicalInterfaces;
+
+    /** @var YamlFileToTree преобразователь конфигурационного файла в конфигурацию для описанных интерфейсов */
+    protected $yamlFileToTreeDescribedInterfaces;
 
     /**
      * @return YamlFileToTree|null преобразователь конфигурационного файла в конфигурацию для интерфейса
      */
-    public function getYamlFileToTreeInterface(): ?YamlFileToTree
+    public function getYamlFileToTreeHierarchicalInterfaces(): ?YamlFileToTree
     {
-        return $this->yamlFileToTreeInterface;
+        return $this->yamlFileToTreeHierarchicalInterfaces;
     }
 
     /**
-     * @param YamlFileToTree|null $yamlFileToTreeInterface
+     * @param YamlFileToTree|null $yamlFileToTreeHierarchicalInterfaces
      * @return $this
      */
-    public function setYamlFileToTreeInterface(YamlFileToTree $yamlFileToTreeInterface = null)
+    public function setYamlFileToTreeHierarchicalInterfaces(YamlFileToTree $yamlFileToTreeHierarchicalInterfaces = null)
     {
-        $this->yamlFileToTreeInterface = $yamlFileToTreeInterface;
+        $this->yamlFileToTreeHierarchicalInterfaces = $yamlFileToTreeHierarchicalInterfaces;
         return $this;
     }
 
     /**
      * @return YamlFileToTree|null
      */
-    public function getYamlFileToTreeInterfaceList(): ?YamlFileToTree
+    public function getYamlFileToTreeDescribedInterfaces(): ?YamlFileToTree
     {
-        return $this->yamlFileToTreeInterfaceList;
+        return $this->yamlFileToTreeDescribedInterfaces;
     }
 
     /**
-     * @param YamlFileToTree|null $yamlFileToTreeInterfaceList
+     * @param YamlFileToTree|null $yamlFileToTreeDescribedInterfaces
      * @return $this
      */
-    public function setYamlFileToTreeInterfaceList(YamlFileToTree $yamlFileToTreeInterfaceList = null)
+    public function setYamlFileToTreeDescribedInterfaces(YamlFileToTree $yamlFileToTreeDescribedInterfaces = null)
     {
-        $this->yamlFileToTreeInterfaceList = $yamlFileToTreeInterfaceList;
+        $this->yamlFileToTreeDescribedInterfaces = $yamlFileToTreeDescribedInterfaces;
         return $this;
     }
 
     /**
      * @return string пространство имён конфига
      */
-    protected function getConfigInterfaceNamespace()
+    protected function getConfigHierarchicalInterfacesNamespace()
     {
-        return $this->configInterfaceNamespace;
+        return $this->configHierarchicalInterfacesNamespace;
     }
 
     /**
-     * @param string $configInterfaceNamespace пространство имён конфига для и нтерфейса
+     * @param string $configHierarchicalInterfacesNamespace пространство имён конфига для и нтерфейса
      * @return $this
      */
-    public function setConfigInterfaceNamespace($configInterfaceNamespace)
+    public function setConfigHierarchicalInterfacesNamespace($configHierarchicalInterfacesNamespace)
     {
-        $this->configInterfaceNamespace = $configInterfaceNamespace;
+        $this->configHierarchicalInterfacesNamespace = $configHierarchicalInterfacesNamespace;
         return $this;
     }
 
     /**
      * @return string пространство имён конфига
      */
-    protected function getConfigInterfaceListNamespace()
+    protected function getConfigDescribedInterfacesNamespace()
     {
-        return $this->configInterfaceListNamespace;
+        return $this->configDescribedInterfacesNamespace;
     }
 
     /**
-     * @param string $configInterfaceListNamespace пространство имён конфига для и нтерфейса
+     * @param string $configDescribedInterfacesNamespace пространство имён конфига для и нтерфейса
      * @return $this
      */
-    public function setConfigInterfaceListNamespace($configInterfaceListNamespace)
+    public function setConfigDescribedInterfacesNamespace($configDescribedInterfacesNamespace)
     {
-        $this->configInterfaceListNamespace = $configInterfaceListNamespace;
+        $this->configDescribedInterfacesNamespace = $configDescribedInterfacesNamespace;
         return $this;
     }
 
@@ -110,10 +112,10 @@ class ConfigClassTreeGenerator extends ConfigStructureTreeGenerator
     protected function createStructureInfoList()
     {
         return $this->createClassInfoList()
-            ->setYamlFileToTreeInterface($this->getYamlFileToTreeInterface())
-            ->setYamlFileToTreeInterfaceList($this->getYamlFileToTreeInterfaceList())
-            ->setConfigInterfaceNamespace($this->getConfigInterfaceNamespace())
-            ->setConfigInterfaceListNamespace($this->getConfigInterfaceListNamespace());
+            ->setYamlFileToTreeHierarchicalInterfaces($this->getYamlFileToTreeHierarchicalInterfaces())
+            ->setYamlFileToTreeDescribedInterfaces($this->getYamlFileToTreeDescribedInterfaces())
+            ->setConfigHierarchicalInterfacesNamespace($this->getConfigHierarchicalInterfacesNamespace())
+            ->setConfigDescribedInterfacesNamespace($this->getConfigDescribedInterfacesNamespace());
     }
 
     /**

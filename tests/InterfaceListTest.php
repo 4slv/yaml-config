@@ -88,8 +88,8 @@ class InterfaceListTest extends PHPUnit\Framework\TestCase
         $this
             ->createConfigClassTreeGenerator()
             ->setYamlFileToTree($yamlFileToTree)
-            ->setConfigInterfaceNamespace(static::INTERFACE_NAMESPACE)
-            ->setYamlFileToTreeInterfaceList($yamlFileToTreeInterfaceList)
+            ->setConfigHierarchicalInterfacesNamespace(static::INTERFACE_NAMESPACE)
+            ->setYamlFileToTreeDescribedInterfaces($yamlFileToTreeInterfaceList)
             ->setConfigCodeRelativePath(static::CODE_RELATIVE_PATH)
             ->setConfigName(static::NAME)
             ->setConfigNamespace(static::NAMESPACE)
