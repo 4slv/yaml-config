@@ -95,7 +95,7 @@ $configGenerator
 ## Интерфейсы
  помощью модуля есть возможность генерации интерфейсов для классов конфигурации.
 1) **Иерархические интерфейсы**.
-    >По структуре yaml соответсвуют yaml конфига. На пример yaml:
+    >По структуре yaml соответствуют yaml конфига. На пример yaml:
     >```yaml
     >family: # семья
     >  father: # отец
@@ -134,7 +134,7 @@ $configGenerator
     >
     >}
     >```
-    >На следующем уровне по иерархии будут находится интрефейсы Father и Doter. Например интерфейс Doter:
+    >На следующем уровне по иерархии будут находится интtрфейсы Father и Doter. На пример интерфейс Doter:
     >
     >```php
     ><?php
@@ -154,7 +154,7 @@ $configGenerator
     >
     >}
     >```
-    >Код для генерации интерфейсов очень похож на код для генерации конфига. Будет выглядить следующим образом:
+    >Код для генерации интерфейсов очень похож на код для генерации конфига. Будет выглядеть следующим образом:
     >
     >```php
     ><?php
@@ -177,20 +177,20 @@ $configGenerator
 2) **Интерфейсы описанные списком**.
     >Пример структуры yaml:
     >```yaml
-    >family_member: # Наименование интерфейса(Коментарий будет использоватся как коментарий к интерфейсу)
+    >family_member: # Наименование интерфейса(Комментарий будет использоваться как комментарий к интерфейсу)
     >  xpath: # Список xpath к элементам которые будут его реализовывать
     >    - /family/*[name]
-    >  property: # Список свойтв указывается для указания геттеров для них
-    >    name: # наисменование свойства (Коментарий будет использоватся как коментарий к гетерру)
-    >      type: string #тип свойчтва
+    >  property: # Список свойств указывается для указания геттеров для них
+    >    name: # наименование свойства (Комментарий будет использоваться как комментарий к гетерру)
+    >      type: string #тип свойства
     >family_father: # Наименование интерфейса 
     >  xpath: # Список xpath к элементам которые будут его реализовывать
     >     - /family/father[name and hobby]
     >  property:
-    >    hobby: # наисменование свойства  
+    >    hobby: # наименование свойства  
     >      type: string
-    >    name: # наисменование свойства
-    >      type: string #тип свойчтва
+    >    name: # наименование свойства
+    >      type: string #тип свойства
     >```
     >Данный yaml будет создовать 2 интерфейса:
     >```php
@@ -201,11 +201,11 @@ $configGenerator
     >use YamlConfig\InterfaceCodeGenerator\InterfaceConfigNode;
     >
     >/**
-    > * Наименование интерфейса(Коментарий будет использоватся как коментарий к интерфейсу)
+    > * Наименование интерфейса(Комментарий будет использоваться как комментарий к интерфейсу)
     > */
     >interface FamilyMember extends InterfaceConfigNode {
     >
-    >    /** @return string наисменование свойства (Коментарий будет использоватся как коментарий к гетерру) */
+    >    /** @return string наименование свойства (Комментарий будет использоваться как комментарий к гетерру) */
     >    public function getName();
     >
     >}
@@ -222,10 +222,10 @@ $configGenerator
     > */
     >interface FamilyFather extends InterfaceConfigNode {
     >
-    >    /** @return string наисменование свойства */
+    >    /** @return string наименование свойства */
     >    public function getName();
     >
-    >    /** @return string наисменование свойства */
+    >    /** @return string наименование свойства */
     >    public function getHobby();
     >
     >}
@@ -295,13 +295,13 @@ $configGenerator
     >class Father extends InterfaceConfigNode implements FatherInterface, FamilyFatherInterface, FamilyMemberInterface
     >{
     >
-    >    /** @return string наисменование свойства */
+    >    /** @return string наименование свойства */
     >    public function getName()
     >    {
     >        return $this->getActualProperty('name');
     >    }
     >
-    >    /** @return string наисменование свойства */
+    >    /** @return string наименование свойства */
     >    public function getHobby()
     >    {
     >        return $this->getActualProperty('hobby');
