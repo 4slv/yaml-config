@@ -3,8 +3,6 @@
 namespace YamlConfig\InterfaceCodeGenerator;
 
 use YamlConfig\StructureCodeGenerator\ConfigStructureTreeGenerator;
-use YamlConfig\StructureCodeGenerator\StructureInfoList;
-use YamlConfig\StructureCodeGenerator\StructureInfoListInterface;
 
 
 /** Генератор структуры интерфейсов конфига */
