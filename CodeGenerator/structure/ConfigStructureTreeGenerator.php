@@ -191,9 +191,13 @@ abstract class ConfigStructureTreeGenerator
     protected function generationNeeded()
     {
         return
-            is_dir($this->getConfigCodeFullPath()) === false
-            ||
-            filemtime($this->getYamlFileToTree()->getConfigFullPath()) > filemtime($this->getConfigCodeFullPath());
+            file_exists($this->getYamlFileToTree()->getConfigFullPath())
+            &&
+            (
+                is_dir($this->getConfigCodeFullPath()) === false
+                ||
+                filemtime($this->getYamlFileToTree()->getConfigFullPath()) > filemtime($this->getConfigCodeFullPath())
+            );
     }
 
     /** Сгенерировать и сохранить контент структуры конфига
