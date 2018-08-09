@@ -15,7 +15,10 @@ class YamlCommentsParser
         $yamlParts = self::splitYaml($yaml);
         $yamlComments = [];
 
+        // TODO сделать функцию self::fillYamlComments не рекурсивной и убрать xdebug.max_nesting_level
+        ini_set('xdebug.max_nesting_level', -1);
         self::fillYamlComments($yamlParts, $yamlComments);
+        ini_set('xdebug.max_nesting_level', 256);
 
         return $yamlComments;
     }
