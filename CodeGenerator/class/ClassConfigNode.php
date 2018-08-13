@@ -38,9 +38,11 @@ abstract class ClassConfigNode
     protected function getActualProperty($propertyName)
     {
         $propertyValue = $this->$propertyName;
-        if(is_array($propertyName) && ArrayHelper::isDateList($propertyValue)){
+
+        if(is_array($propertyValue) && ArrayHelper::isDateList($propertyValue)){
             $historyProperty = array_slice($propertyValue, 0);
             krsort($historyProperty);
+
             foreach($historyProperty as $dateString => $value){
                 $date = DateTime::createFromFormat(
                     'Y-m-d', $dateString
