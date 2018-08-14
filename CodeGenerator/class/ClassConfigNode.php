@@ -41,7 +41,6 @@ abstract class ClassConfigNode
         if(is_array($propertyValue) && ArrayHelper::isDateList($propertyValue)){
             $historyProperty = array_slice($propertyValue, 0);
             krsort($historyProperty);
-
             foreach($historyProperty as $dateString => $value){
                 $date = DateTime::createFromFormat(
                     'Y-m-d', $dateString
