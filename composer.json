@@ -9,11 +9,17 @@
             "email": "gopooop@gmail.com"
         }
     ],
+    "repositories": [
+        {
+          "type": "git",
+          "url": "git@gitlab.4slovo.ru:4slovo/helper.git"
+        }
+    ],
     "minimum-stability": "stable",
     "require": {
         "php": ">=5.4.0",
         "romaricdrigon/metayaml": "^1.1",
-        "4slv/helper": "v1.0.3"
+        "4slv/helper": "v1.0.4"
     },
     "autoload": {
         "psr-4": {
