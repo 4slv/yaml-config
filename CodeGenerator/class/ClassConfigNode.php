@@ -43,7 +43,7 @@ abstract class ClassConfigNode
             krsort($historyProperty);
             foreach($historyProperty as $dateString => $value){
                 $date = DateTime::createFromFormat(
-                    'Y-m-d', $dateString
+                    'Y-m-d', $dateString, $this->actualDate->getTimezone()
                 );
                 $date->setTime(0,0);
                 if($date <= $this->actualDate){
